@@ -1,0 +1,21 @@
+Deployment of Node.js Application using Docker.
+Prerequisites:
+1. Docker: Ensure that Docker is installed and running on the deployment machine. 
+--sudo apt install docker      #Only if docker is not installed.
+2. Create a new directory for your Node.js application.
+--mkdir <name of directory>
+3. Enter into that directory using "cd" command.
+--cd <name of directory> 
+4. Create a new file named "Dockerfile" in the root directory of your Node.js application.
+5. Now Building the Docker Image:
+    5(a). Open a terminal or command prompt and navigate to the root directory of your Node.js application (where the Dockerfile is located).
+    5(b). Run the following command to build the Docker image:
+             --docker build -t <name> .
+Note: You can change the <name> to name of the application you are building.
+6. The -t flag specifies the name and tag for the image (e.g. my-node-app).
+7. Running the Docker Container:
+--docker run -d -p 3000:3000 <name>
+8.Test the Application: using the given URL below 
+http://localhost:3000
+
+Note: If you change the port no., then you also have to change the port no. on the Testing the Application URL.
