@@ -1,0 +1,28 @@
+Deploy the monitoring Tools architecture to continuous monitoring the infra:
+step 1: Deploy Prometheus:
+Create a namespace for Prometheus: 
+--kubectl create namespace monitoring
+Apply the Prometheus deployment and service YAML:
+--kubectl apply -f https://raw.githubusercontent.com/prometheus/prometheus/main/documentation/examples/prometheus-kubernetes.yml -n monitoring
+
+step 2: Deploy Grafana:
+Create a namespace for Grafana:
+--kubectl create namespace grafana
+Apply the Grafana deployment and service YAML:
+--kubectl apply -f https://raw.githubusercontent.com/grafana/helm-charts/main/charts/grafana/values.yaml -n grafana
+Access Grafana's web interface: Obtain the Grafana service URL and access it in your browser. Retrieve the admin password using the following command:
+--kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+
+step 3: Configure Prometheus as a data source in Grafana:
+Open the Grafana web interface and log in using the admin credentials.
+Navigate to Configuration -> Data Sources -> Add data source.
+Choose Prometheus and configure the URL to http://prometheus-server.monitoring.svc.cluster.local:80 (assuming default setup).
+Save the data source configuration.
+
+step 4: Import monitoring dashboards:
+Explore the Grafana dashboard repository: Visit https://grafana.com/grafana/dashboards to discover pre-built dashboards for various monitoring use cases.
+Import desired dashboards: In Grafana, navigate to Dashboards -> Manage -> Import, and provide the dashboard ID or upload the JSON file.
+
+step 5: Customize and configure dashboards:
+Modify and fine-tune the imported dashboards to suit your specific infrastructure and monitoring needs.
+Add additional metrics and visualizations as required.  
