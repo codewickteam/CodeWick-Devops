@@ -1,0 +1,74 @@
+"Creating three-tier application Infra using Ansible and terraform"
+
+step 1: Set up your project directory:
+1.1) Create a new directory for your project.
+-mkdir task1
+1.2) Inside the project directory, create the following subdirectories: ansible, terraform, and inventory.
+-cd task1
+-mkdir ansible
+-mkdir teraform
+-mkdir inventory
+
+step 2: Set up the Ansible configuration:
+2.1) Inside the ansible directory, create an ansible.cfg file with the following content:
+[defaults]
+inventory = ../inventory
+remote_user = <ssh_username>
+private_key_file = <path_to_ssh_private_key>
+
+step 3: Define the inventory:
+3.1) Inside the inventory directory, create a file named hosts and define your hosts. For a three-tier 
+application, you typically have separate groups for web servers, application servers, and database servers.
+For example:
+[web_servers]
+web1 ansible_host=<web1_ip_address>
+web2 ansible_host=<web2_ip_address>
+
+[app_servers]
+app1 ansible_host=<app1_ip_address>
+app2 ansible_host=<app2_ip_address>
+
+[db_servers]
+db1 ansible_host=<db1_ip_address>
+db2 ansible_host=<db2_ip_address>
+
+step 4: Set up Terraform:
+4.1) Inside the terraform directory, create a Terraform configuration file, for example, main.tf, with the 
+infrastructure definition. Here's an example for a simple setup:
+# Provider configuration (e.g., AWS)
+provider "aws" {
+  region = "us-west-2"
+}
+
+# Define resources (e.g., EC2 instances)
+resource "aws_instance" "web" {
+  count         = 2
+  instance_type = "t2.micro"
+  # Other configuration parameters like ami, subnet_id, security_groups, etc.
+  # ...
+}
+
+# Similar resource blocks for app and db instances
+# ...
+
+step 5: Use Ansible with Terraform:
+5.1) Inside the ansible directory, create a playbook, for example, playbook.yml, to configure the 
+infrastructure created by Terraform. Here's an example of how you can set up the web servers:
+- hosts: web_servers
+  become: yes
+  tasks:
+  - name: Install and configure web server
+    # Add your web server configuration tasks here
+    # ...
+
+step 6: Run Terraform:
+6.1) Change to the terraform directory and run the following commands:
+-terraform init   # Initialize Terraform
+-terraform apply  # Create the infrastructure
+
+step 7: Run Ansible playbook:
+7.1) Change to the ansible directory and run the following command:
+-ansible-playbook playbook.yml
+
+
+
